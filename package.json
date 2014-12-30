@@ -1,0 +1,37 @@
+{
+  "name": "hapi-common-log",
+  "version": "1.0.0",
+  "description": "Parses the hapi request object to create a common log format log line",
+  "main": "index.js",
+  "scripts": {
+    "test": "lab -vC"
+  },
+  "keywords": [
+    "hapi",
+    "hapijs",
+    "common",
+    "log",
+    "format",
+    "common log format"
+  ],
+  "author": "Raquel Vélez <raquel@rckbt.me>",
+  "license": "ISC",
+  "dependencies": {
+    "moment-tokens": "^1.0.0"
+  },
+  "devDependencies": {
+    "hapi": "^6.4.0",
+    "lab": "^4.0.0"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:rockbot/hapi-common-log.git"
+  },
+  "bugs": {
+    "url": "https://github.com/rockbot/hapi-common-log/issues"
+  },
+  "homepage": "https://github.com/rockbot/hapi-common-log"
+}
