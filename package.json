@@ -1,6 +1,6 @@
 {
   "name": "hapi-common-log",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Parses the hapi request object to create a common log format log line",
   "main": "index.js",
   "scripts": {
