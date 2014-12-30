@@ -54,3 +54,25 @@ describe('common log format', function () {
     });
   });
 });
+
+describe('handling options', function () {
+  it('looks up IP from the header if desired', function (done) {
+    server.ext('onRequest', function (request, next) {
+      request.headers['x-forwarded-to'] = '123.45.678';
+      next();
+    });
+
+    server.ext('onPostHandler', function (request, next) {
+      var clf = toCommonLogFormat(request, {ipHeader: 'x-forwarded-to'});
+      var components = clf.split(' ');
+
+      expect(components[0]).to.equal('123.45.678');
+
+      next();
+    });
+
+    server.inject({url: '/'}, function () {
+      done();
+    });
+  });
+});

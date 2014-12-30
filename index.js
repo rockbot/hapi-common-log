@@ -1,6 +1,6 @@
-var moment = require('moment-tokens');
+var moment  = require('moment-tokens');
 
-module.exports = function toCommonLogFormat (request) {
+module.exports = function toCommonLogFormat (request, options) {
 
   var rawReq = request.raw.req;
 
@@ -8,7 +8,7 @@ module.exports = function toCommonLogFormat (request) {
       path = rawReq.url,
       httpProtocol = rawReq.client ? rawReq.client.npnProtocol : 'HTTP/' + rawReq.httpVersion;
 
-  var clientIp = request.info.remoteAddress,
+  var clientIp = options && options.ipHeader && request.headers[options.ipHeader] || request.info.remoteAddress,
       clientId = '-',
       userid = request.id,
       time = '[' + moment().strftime('%d/%b/%Y:%H:%M:%S %z') + ']',

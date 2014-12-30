@@ -18,6 +18,16 @@ server.ext('onPostHandler', function (request, next) {
 
 ```
 
+## Options
+
+Sometimes you want a specific header for incoming client IP (i.e. if you've got a proxy). To customize:
+
+```js
+
+toCommonLogFormat(request, { ipHeader: 'x-forwarded-to' });
+
+```
+
 ## The Common Log Format
 
 From the [Wikipedia page on Common Log Format](https://en.wikipedia.org/wiki/Common_Log_Format):
