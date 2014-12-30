@@ -42,7 +42,7 @@ describe('common log format', function () {
       var expectedDate = date[2] + '/' + date[1] + '/' + date[3] + ':';
       var expectedTime = time[0] + ' ' + time[1].slice(3);
 
-      expect(components[0]).to.include(expectedDate + expectedTime);
+      expect(components[0]).to.include('[' + expectedDate + expectedTime + ']');
       expect(components[1]).to.equal('GET / HTTP/1.1');
       expect(components[2]).to.equal(' 200 -');
 

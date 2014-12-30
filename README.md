@@ -14,7 +14,7 @@ server.ext('onPostHandler', function (request, next) {
   next();
 });
 
-// output: 127.0.0.1 - 1419961634390-24985-29768 30/Dec/2014:09:47:14 -0800 "GET /static/images/npm-logo.svg HTTP/1.1" 200 -
+// output: 127.0.0.1 - 1419961634390-24985-29768 [30/Dec/2014:09:47:14 -0800] "GET /static/images/npm-logo.svg HTTP/1.1" 200 -
 
 ```
 
