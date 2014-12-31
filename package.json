@@ -1,6 +1,6 @@
 {
   "name": "hapi-common-log",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Parses the hapi request object to create a common log format log line",
   "main": "index.js",
   "scripts": {
@@ -17,11 +17,12 @@
   "author": "Raquel Vélez <raquel@rckbt.me>",
   "license": "ISC",
   "dependencies": {
+    "hapi": "^8.0.0",
     "moment-tokens": "^1.0.0"
   },
   "devDependencies": {
-    "hapi": "^6.4.0",
-    "lab": "^4.0.0"
+    "code": "^1.2.1",
+    "lab": "^5.1.1"
   },
   "directories": {
     "test": "test"

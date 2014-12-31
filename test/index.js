@@ -1,78 +1,108 @@
-var Lab = require('lab'),
-    lab = exports.lab = Lab.script(),
-    describe = lab.experiment,
-    it = lab.test,
-    expect = Lab.expect;
+var Code = require('code');
+var Lab = require('lab');
+var lab = exports.lab = Lab.script();
 
-var Hapi = require('hapi'),
-    toCommonLogFormat = require('../'),
-    server;
+var Hapi = require('hapi');
+var server = new Hapi.Server();
 
-  server = Hapi.createServer();
+var server1 = server.connection({
+  host: 'localhost',
+  port: '8080'
+});
 
-  server.route({
-    method: 'GET',
-    path: '/',
-    handler: function (request, reply) {
-      reply(200);
-    }
-  });
+var server2 = server.connection({
+  host: 'localhost',
+  port: '8081'
+});
 
-
-describe('common log format', function () {
-  it('comes through as expected', function (done) {
-
-    server.ext('onPostHandler', function (request, next) {
-      var clf = toCommonLogFormat(request);
-
-      var components = clf.split('"');
-
-      var now = new Date();
-      var date = now.toDateString().split(' ');
-      // [ 'Tue',
-      //   'Dec',
-      //   '30',
-      //   '2014' ]
-
-      var time = now.toTimeString().split(' ');
-      // [ '11:52:54', 'GMT-0800', '(PST)' ]
+var routes = {
+  method: 'GET',
+  path: '/',
+  handler: function (request, reply) {
+    reply(200);
+  }
+};
 
 
-      // '%d/%b/%Y:%H:%M:%S %z'
-      var expectedDate = date[2] + '/' + date[1] + '/' + date[3] + ':';
-      var expectedTime = time[0] + ' ' + time[1].slice(3);
+server1.route(routes);
+server2.route(routes);
 
-      expect(components[0]).to.include('[' + expectedDate + expectedTime + ']');
-      expect(components[1]).to.equal('GET / HTTP/1.1');
-      expect(components[2]).to.equal(' 200 -');
+lab.experiment('common log format', function () {
+  lab.test('comes through as expected', function (done) {
 
-      next();
-    });
+    server1.register([
+      {
+        register: require('../'),
+        options: {
+          _test: function(log) {
 
-    server.inject({url: '/'}, function () {
-      done();
+            var components = log.split('"');
+
+            var now = new Date();
+            var date = now.toDateString().split(' ');
+            // [ 'Tue',
+            //   'Dec',
+            //   '30',
+            //   '2014' ]
+
+            var time = now.toTimeString().split(' ');
+            // [ '11:52:54', 'GMT-0800', '(PST)' ]
+
+            // '%d/%b/%Y:%H:%M:%S %z'
+            var expectedDate = date[2] + '/' + date[1] + '/' + date[3] + ':';
+            var expectedTime = time[0] + ' ' + time[1].slice(3);
+
+            Code.expect(components[0]).to.include('[' + expectedDate + expectedTime + ']');
+            Code.expect(components[1]).to.equal('GET / HTTP/1.1');
+            Code.expect(components[2]).to.equal(' 200 -');
+          }
+        }
+      }
+    ], function(err) {
+
+      Code.expect(err).to.equal(undefined);
+
+      server1.inject({
+        url: '/'
+      }, function () {
+        done();
+      });
+
     });
   });
 });
 
-describe('handling options', function () {
-  it('looks up IP from the header if desired', function (done) {
-    server.ext('onRequest', function (request, next) {
+lab.experiment('handling options', function () {
+  lab.test('looks up IP from the header if desired', function (done) {
+
+    server2.ext('onRequest', function (request, reply) {
       request.headers['x-forwarded-to'] = '123.45.678';
-      next();
+      return reply.continue();
     });
 
-    server.ext('onPostHandler', function (request, next) {
-      var clf = toCommonLogFormat(request, {ipHeader: 'x-forwarded-to'});
-      var components = clf.split(' ');
+    server2.register([
+      {
+        register: require('../'),
+        options: {
+          ipHeader: 'x-forwarded-to',
+          _test: function(log) {
 
-      expect(components[0]).to.equal('123.45.678');
+            var components = log.split(' ');
 
-      next();
-    });
+            Code.expect(components[0]).to.equal('123.45.678');
+          }
+        }
+      }
+    ], function(err) {
 
-    server.inject({url: '/'}, function () {
-      done();
+      Code.expect(err).to.equal(undefined);
+
+      server2.inject({
+        url: '/'
+      }, function () {
+        done();
+      });
+
     });
   });
 });
