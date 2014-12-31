@@ -1,4 +1,4 @@
-var Code = require('code');;
+var Code = require('code');
 var Lab = require('lab');
 var lab = exports.lab = Lab.script();
 

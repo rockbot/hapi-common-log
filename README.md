@@ -9,7 +9,7 @@ Parses the hapi request object to create a common log format log line
 
 server.register([
   {
-    register: require('../'),
+    register: require('hapi-common-log'),
   }
 ]);
 
@@ -25,7 +25,7 @@ Sometimes you want a specific header for incoming client IP (i.e. if you've got 
 
 server2.register([
   {
-    register: require('../'),
+    register: require('hapi-common-log'),
     options: {
       ipHeader: 'x-forwarded-to'
     }
