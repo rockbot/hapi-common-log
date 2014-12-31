@@ -7,12 +7,11 @@ Parses the hapi request object to create a common log format log line
 
 ```js
 
-var toCommonLogFormat = require('hapi-common-log');
-
-server.ext('onPostHandler', function (request, next) {
-  console.log(toCommonLogFormat(request));
-  next();
-});
+server.register([
+  {
+    register: require('../'),
+  }
+]);
 
 // output: 127.0.0.1 - 1419961634390-24985-29768 [30/Dec/2014:09:47:14 -0800] "GET /static/images/npm-logo.svg HTTP/1.1" 200 -
 
@@ -24,7 +23,14 @@ Sometimes you want a specific header for incoming client IP (i.e. if you've got 
 
 ```js
 
-toCommonLogFormat(request, { ipHeader: 'x-forwarded-to' });
+server2.register([
+  {
+    register: require('../'),
+    options: {
+      ipHeader: 'x-forwarded-to'
+    }
+  }
+]);
 
 ```
 
