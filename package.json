@@ -20,6 +20,7 @@
     "moment-tokens": "^1.0.0"
   },
   "devDependencies": {
+    "boom": "^3.1.2",
     "hapi": "^6.4.0",
     "lab": "^4.0.0"
   },

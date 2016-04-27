@@ -13,7 +13,7 @@ module.exports = function toCommonLogFormat (request, options) {
       userid = request.id,
       time = '[' + moment().strftime('%d/%b/%Y:%H:%M:%S %z') + ']',
       requestLine = '"' + [method, path, httpProtocol].join(' ') + '"',
-      statusCode = request.response.statusCode,
+      statusCode = request.response.statusCode || request.response.output.statusCode,
       objectSize = '-';
 
   return [clientIp, clientId, userid, time, requestLine, statusCode, objectSize].join(' ');
