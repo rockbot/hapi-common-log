@@ -9,7 +9,7 @@ Parses the hapi request object to create a common log format log line
 
 var toCommonLogFormat = require('hapi-common-log');
 
-server.ext('onPostHandler', function (request, next) {
+server.ext('onPreResponse', function (request, next) {
   console.log(toCommonLogFormat(request));
   next();
 });
